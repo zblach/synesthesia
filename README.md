@@ -3,19 +3,19 @@ synthesia
 
 colorized pipe for visual pattern analysis.
 
-=usage=
+# usage 
 
-==example==
+## example 
 
-xxd <-g [num]> [filename] | synthesia.py
+> xxd <-g [num]> [filename] | synthesia.py
 
-=features=
-===pipes supported:===
-  *xxd
+# features 
+### pipes supported:
+* xxd
   
-===color schemes supported:===
-  *Default
-  *UglyRainbowHex
-  *NicerRainbowHex
-  *BracketCounter
-  *Composite
+### color schemes supported:
+* Default
+* UglyRainbowHex
+* NicerRainbowHex
+* BracketCounter
+* Composite
