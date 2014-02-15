@@ -1,4 +1,4 @@
-synthesia
+synesthesia
 =========
 
 colorized pipe for visual pattern analysis.
@@ -7,7 +7,7 @@ colorized pipe for visual pattern analysis.
 
 ## example 
 
-> xxd <-g [num]> [filename] | synthesia.py
+> xxd <-g [num]> [filename] | synesthesia.py
 
 # features 
 ### pipes supported:
