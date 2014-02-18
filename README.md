@@ -7,8 +7,8 @@ colorized pipe for visual pattern analysis.
 
 ## example 
 
-> xxd <options> [filename] | synesthesia.py
-> hexdump [filename] | synesthesia.py
+    xxd <options> [filename] | synesthesia.py
+    hexdump [filename] | synesthesia.py
 
 # features 
 ### pipes supported:
