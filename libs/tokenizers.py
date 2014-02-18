@@ -6,12 +6,21 @@ __author__ = 'zblach'
 
 
 class Tokenizer(object):
-    @staticmethod
-    def tokenize(line):
-        raise NotImplementedError("this method requires an override")
+    fitness_state = enum('DEFINITELY', 'PROBABLY', 'MAYBE', 'POSSIBLY', 'NEGATORY')
+
+    color_scheme = DefaultColors
+    def set_color_scheme(self, color_scheme):
+        self.color_scheme = color_scheme
+
 
     @staticmethod
-    def consume(line):
+    def syntax_fitness_check(line):
+        raise NotImplementedError("this method requires an override")
+
+    def tokenize(self, line):
+        raise NotImplementedError("this method requires an override")
+
+    def consume(self, line):
         raise NotImplementedError("this method requires an override")
 
 
@@ -22,7 +31,14 @@ class XXDTokenizer(Tokenizer):
     color_scheme = DefaultColors
 
     @staticmethod
-    def tokenize(line):
+    def syntax_fitness_check(line):
+        if re.match("^([0-9a-fA-F]+): ([0-9a-fA-F]+ )+ (.*)$", line):
+            return Tokenizer.fitness_state.DEFINITELY
+        else:
+            return Tokenizer.fitness_state.NEGATORY
+
+
+    def tokenize(self, line):
         try:
             num, line = line.split(":", 1)
             dat, line = line.split("  ", 1)
@@ -32,9 +48,6 @@ class XXDTokenizer(Tokenizer):
                      (XXDTokenizer.return_tokens.RAW_STRING, line)])
         except:
             return (XXDTokenizer.parse_states.UNKNOWN, line)
-
-    def setcolor(self, colorScheme):
-        self.color_scheme = colorScheme
 
     def consume(self, tokens):
         (state, tokens) = tokens
@@ -57,3 +70,25 @@ class XXDTokenizer(Tokenizer):
             return line
         else:
             return self.color_scheme.unknown(tokens)
+
+
+class XXDBinaryTokenizer(XXDTokenizer):
+    @staticmethod
+    def syntax_fitness_check(line):
+        if re.match("^([0-9a-fA-F]+): ([01]+ )+ (.*)$", line):
+            return Tokenizer.fitness_state.DEFINITELY
+        elif re.match("^\*$", line):
+            return Tokenizer.fitness_state.POSSIBLY
+        else:
+            return Tokenizer.fitness_state.NEGATORY
+
+
+class HexdumpTokenizer(Tokenizer):
+    @staticmethod
+    def syntax_fitness_check(line):
+        if re.match("^([0-9a-fA-F]+)( [0-9a-fA-F]+)+$", line):
+            return Tokenizer.fitness_state.DEFINITELY
+        elif re.match("^\*$", line):
+            return Tokenizer.fitness_state.POSSIBLY
+        else:
+            return Tokenizer.fitness_state.NEGATORY

@@ -1,10 +1,14 @@
 __author__ = 'zblach'
 
-import colors as ansicolors
 import re
+
+import colors as ansicolors
 
 
 class DefaultColors(object):
+    def __getattr__(self, name):
+        return self.unknown
+
     @staticmethod
     def number(token):
         return ansicolors.color(token, fg=248)
