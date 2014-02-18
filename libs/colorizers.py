@@ -9,26 +9,21 @@ class DefaultColors(object):
     def __getattr__(self, name):
         return self.unknown
 
-    @staticmethod
-    def number(token):
+    def number(self,token):
         return ansicolors.color(token, fg=248)
 
-    @staticmethod
-    def hexes(token):
+    def hexes(self,token):
         return ansicolors.red(token)
 
-    @staticmethod
-    def raw_string(token):
+    def raw_string(self,token):
         return ansicolors.green(token)
 
-    @staticmethod
-    def unknown(token):
+    def unknown(self,token):
         return ansicolors.blue(token)
 
 
 class UglyRainbowHex(DefaultColors):
-    @staticmethod
-    def hexes(token):
+    def hexes(self,token):
         stream = ""
         for chr in re.findall("[0-9A-Fa-f]{2}", token):
             stream += ansicolors.color(chr, fg=int(chr, 16))
@@ -39,8 +34,7 @@ class UglyRainbowHex(DefaultColors):
 class NicerRainbowHex(DefaultColors):
     char_ansicolors = range(124, 231)
 
-    @staticmethod
-    def hexes(token):
+    def hexes(self,token):
         stream = ""
         for chr in re.findall("[0-9A-Fa-f]{2}", token):
             scale = (int(chr, 16) / 256.0) * len(NicerRainbowHex.char_ansicolors)
@@ -54,8 +48,7 @@ class BracketCounter(DefaultColors):
     default_color = 243
     bracket_index = 0
 
-    @staticmethod
-    def raw_string(token):
+    def raw_string(self,token):
         constructed = ""
         for c in token:
             if c in "<({[":
@@ -73,10 +66,8 @@ class BracketCounter(DefaultColors):
 
 
 class Composite(DefaultColors):
-    @staticmethod
-    def raw_string(*args):
-        return BracketCounter.raw_string(*args)
+    def raw_string(self,token):
+        return BracketCounter.raw_string(token)
 
-    @staticmethod
-    def hexes(*args):
-        return NicerRainbowHex.hexes(*args)
+    def hexes(self,token):
+        return NicerRainbowHex.hexes(token)
