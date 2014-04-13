@@ -32,7 +32,11 @@ def determine_language(stream):
                 languages[l] = (d, state)
             else:
                 languages.pop(l)
-
+        
+        if (states == []):
+            
+            raise(SyntaxError("Couldn't determine language."))
+        
         if len(languages) == 1 or (
                     len(set(states)) == 1 and states[0] == Tokenizer.fitness_state.DEFINITELY):
             break

@@ -6,12 +6,14 @@ import colors as ansicolors
 
 class DefaultColors(object):
     def __getattr__(self, name):
-        if not self.__dict__.has_key(name):
-            return self.default
+        #print name, "unknown"
+        return self.default
        
-    
     def default(self, token):
         return ansicolors.blue(token)
+    
+    def number(self, token):
+        return ansicolors.color(token, fg=243)
 
 
 class UglyRainbowHex(DefaultColors):
@@ -40,7 +42,7 @@ class BracketCounter(DefaultColors):
     default_color = 243
     bracket_index = 0
 
-    def raw_string(self,token):
+    def raw_text(self,token):
         constructed = ""
         for c in token:
             if c in "<({[":
@@ -58,8 +60,10 @@ class BracketCounter(DefaultColors):
 
 
 class Composite(DefaultColors):
-    def raw_string(self,token):
-        return BracketCounter.raw_string(token)
+    @staticmethod
+    def raw_text(token):
+        return BracketCounter().raw_text(token)
 
-    def hexes(self,token):
-        return NicerRainbowHex.hexes(token)
+    @staticmethod
+    def hexes(token):
+        return NicerRainbowHex().hexes(token)

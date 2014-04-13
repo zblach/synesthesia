@@ -7,11 +7,10 @@ __author__ = 'zblach'
 
 class Tokenizer(object):
     fitness_state = enum('DEFINITELY', 'PROBABLY', 'MAYBE', 'POSSIBLY', 'NEGATORY')
-
     color_scheme = DefaultColors
-    def set_color_scheme(self, color_scheme):
-        self.color_scheme = color_scheme()
 
+    def __init__(self, colorscheme=DefaultColors):
+        self.color_scheme = colorscheme()
 
     @staticmethod
     def syntax_fitness_check(line):
@@ -51,7 +50,6 @@ class XXDTokenizer(Tokenizer):
 
     def consume(self, tokens):
         (state, tokens) = tokens
-
         if state == XXDTokenizer.parse_states.SUCCESS:
             line = ""
             for (state, token) in tokens:
@@ -60,10 +58,10 @@ class XXDTokenizer(Tokenizer):
                 elif state == XXDTokenizer.return_tokens.ENCODED_DATA:
                     for (type, phrase) in token:
                         if type == XXDTokenizer.return_tokens.WORD:
-                            line += self.color_scheme.word(phrase) + " "
+                            line += self.color_scheme.hexes(phrase) + " "
                     line += " "
                 elif state == XXDTokenizer.return_tokens.RAW_STRING:
-                    line += self.color_scheme.raw_string(token)
+                    line += self.color_scheme.raw_text(token)
                 else:
                     return self.color_scheme.unknown(token)
 
