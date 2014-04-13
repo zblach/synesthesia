@@ -4,13 +4,13 @@ __author__ = 'zblach'
 def enum(*sequential, **named):
     return type('Enum', (), dict(zip(sequential, sequential), **named))
 
-from tokenizers import Tokenizer
+from libs.tokenizers import Tokenizer
 
 def list_languages():
     languages = {}
-    for (k, v) in tokenizers.__dict__.iteritems():
+    for (k, v) in tokenizers.__dict__.items():
         try:
-            if issubclass(v, Tokenizer):
+            if issubclass(v, tokenizers.Tokenizer):
                 languages[v] = (len(v.mro()[:-1]), Tokenizer.fitness_state.POSSIBLY)
         except:
             pass
@@ -25,7 +25,7 @@ def determine_language(stream):
         line = stream.readline()
         precache += [line]
         states = []
-        for l, (d, s) in languages.copy().iteritems():
+        for l, (d, s) in languages.copy().items():
             state = l.syntax_fitness_check(line[:-1])
             if state != Tokenizer.fitness_state.NEGATORY:
                 states += [state]
@@ -44,7 +44,7 @@ def determine_language(stream):
     max_d = -1
     candidate_language = None
 
-    for l, (d, s) in languages.iteritems():
+    for l, (d, s) in languages.items():
         if d > max_d:
             d = max_d
             candidate_language = l
