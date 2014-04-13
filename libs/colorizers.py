@@ -4,21 +4,13 @@ import re
 
 import colors as ansicolors
 
-
 class DefaultColors(object):
     def __getattr__(self, name):
-        return self.unknown
-
-    def number(self,token):
-        return ansicolors.color(token, fg=248)
-
-    def hexes(self,token):
-        return ansicolors.red(token)
-
-    def raw_string(self,token):
-        return ansicolors.green(token)
-
-    def unknown(self,token):
+        if not self.__dict__.has_key(name):
+            return self.default
+       
+    
+    def default(self, token):
         return ansicolors.blue(token)
 
 
