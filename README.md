@@ -2,6 +2,8 @@ synesthesia
 =========
 
 colorized pipe for visual pattern analysis.
+# requirements
+* ansicolors module
 
 # usage 
 
